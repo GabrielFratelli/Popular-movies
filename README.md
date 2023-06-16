@@ -33,4 +33,8 @@ Para rodar este projeto é necessário ter instalado na sua máquina as seguinte
 <h1 align="center">
     <img src="public/home.png">
     <img src="public/summary-movie.png">
+    <div style="display: flex;">
+    <img src="public/home-mobile.png" height="600" width="350">
+    <img src="public/summary-mobile.png" height="600" width="350">
+    </div>
 </h1>
