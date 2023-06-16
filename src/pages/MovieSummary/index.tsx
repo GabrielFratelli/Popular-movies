@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { SummaryPage, Summary, Details } from "./styles";
+import { Processing, SummaryPage, Summary, Details } from "./styles";
 import { useEffect, useState, useCallback } from "react";
 import { api } from "../../service/api";
 import { image_path } from "../../config/image-path";
@@ -10,17 +10,44 @@ import classNames from "classnames";
 
 export function MovieSummary() {
   const { id } = useParams();
-  const [movie, setMovie] = useState<MovieProps>();
   const inspectClassName = classNames("MovieSummary");
+  const [movie, setMovie] = useState<MovieProps>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const getMovies = useCallback(async () => {
-    const result = await api.get(`/movie/${id}`, { params: { page: 2 } });
-    setMovie(result.data);
+    try {
+      const result = await api.get(`/movie/${id}`, { params: { page: 2 } });
+      setMovie(result.data);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
+    } catch (error) {
+      setIsLoading(false);
+      setError(true);
+    }
   }, [id]);
 
   useEffect(() => {
     getMovies();
   }, [getMovies]);
+
+  if (isLoading) {
+    return (
+      <Processing>
+        <Title>Searching movie summary information..</Title>
+      </Processing>
+    );
+  }
+
+  if (error) {
+    return (
+      <Processing>
+        <Title>I couldn't find the summary of the movie..</Title>
+      </Processing>
+    );
+  }
 
   return (
     <SummaryPage className={inspectClassName}>

@@ -1,24 +1,29 @@
-import { Container, Movie, MovieList } from "./styles";
+import { MoviePage, Movie, MovieList } from "./styles";
 import { Title } from "../../components/Title";
 import { api } from "../../service/api";
 import { image_path } from "../../config/image-path";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { MoviesProps } from "./types";
+import classNames from "classnames";
 
 export function Home() {
+  const inspectClassName = classNames("Home");
   const [movies, setMovies] = useState<MoviesProps[]>();
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
 
   const getMovies = async () => {
     try {
       const result = await api.get("/movie/popular", { params: { page: 1 } });
       setMovies(result.data.results);
-      setIsLoading(false);
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     } catch (error) {
-      setError("Oops! we couldn't find the most popular movies right now...");
       setIsLoading(false);
+      setError(true);
     }
   };
 
@@ -27,15 +32,23 @@ export function Home() {
   }, []);
 
   if (isLoading) {
-    return <p>Wait a moment we are looking ;)</p>;
+    return (
+      <MoviePage>
+        <Title>Wait a moment we are looking..</Title>
+      </MoviePage>
+    );
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <MoviePage>
+        <Title>Oops! we can't find the most popular movies right now..</Title>
+      </MoviePage>
+    );
   }
 
   return (
-    <Container>
+    <MoviePage className={inspectClassName}>
       <Title>Popular Movies</Title>
       <MovieList>
         {movies?.map((movie) => {
@@ -52,6 +65,6 @@ export function Home() {
           );
         })}
       </MovieList>
-    </Container>
+    </MoviePage>
   );
 }

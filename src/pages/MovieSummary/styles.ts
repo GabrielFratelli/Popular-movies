@@ -1,10 +1,25 @@
 import { styled } from "styled-components";
 
-export const SummaryPage = styled.div`
+export const Processing = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  .Title {
+    text-align: center;
+    font-weight: var(-font-weight-bold);
+    color: var(--color-purple);
+    text-shadow: var(--color-purple-secondary) 0.1em 0.1em 0.7em;
+  }
+`;
+
+export const SummaryPage = styled.div`
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Summary = styled.div`
@@ -15,6 +30,11 @@ export const Summary = styled.div`
   img {
     width: 300px;
     border-radius: var(--font-size-md);
+  }
+
+  @media (max-width: 768px) {
+    padding: var(--spacing-lg);
+    flex-direction: column;
   }
 `;
 
@@ -56,5 +76,10 @@ export const Details = styled.div`
 
   .Button:hover {
     opacity: 0.5;
+  }
+
+  @media (max-width: 768px) {
+    max-width: none;
+    margin: 0px;
   }
 `;
